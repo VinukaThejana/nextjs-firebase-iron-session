@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 // validate the user logged in status from the server side and stop the user
 // from accessing the page if they are logged in
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
-  async function getServerSideProps({ req }) {
+  async function getServerSideProps({ req, res }) {
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
     const uid = (await (req.session as any).uid) || '';
     const user = await firebaseAdmin
       .auth()

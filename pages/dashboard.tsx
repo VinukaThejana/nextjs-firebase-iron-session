@@ -16,7 +16,8 @@ import { firebaseAdmin } from 'config/firebase-admin';
 
 // Gte the user from the server side
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
-  async function getServerSideProps({ req }) {
+  async function getServerSideProps({ req, res }) {
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
     const id = (await (req.session as any).uid) || '';
     const user = await firebaseAdmin
       .auth()
